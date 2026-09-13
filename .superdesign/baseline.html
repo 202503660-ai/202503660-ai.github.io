@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="ko"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TROIKA 트로이카 연합축제 — AI 맞춤형 추천 &amp; 실시간 동적 분산 시스템</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1e293b;
+      --bg-glass: rgba(17, 24, 39, 0.72);
+      --bg-glass-card: rgba(30, 41, 59, 0.65);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-primary: #6366f1;
+      --accent-purple: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-cyan: #06b6d4;
+      --accent-pink: #ec4899;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.10) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    .outfit-font { font-family: 'Outfit', sans-serif; }
+    .glass-panel {
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; background-color: var(--accent-emerald); border-radius: 50%;
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.9); opacity: 0.7; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .custom-range {
+      -webkit-appearance: none; width: 100%; height: 8px; border-radius: 9999px; background: #334155; outline: none;
+    }
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 12px rgba(56, 189, 248, 0.8); cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col" data-sd-id="1">
+    <header class="sticky top-0 z-[1000] w-full border-b border-[rgba(255,255,255,0.08)] bg-[rgba(10,14,26,0.85)] backdrop-blur-[20px] py-[14px]" data-sd-id="2">
+      <div class="max-w-[1440px] mx-auto px-6 flex items-center justify-between" data-sd-id="3">
+        <div class="flex items-center gap-3" data-sd-id="4">
+          <span class="bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] text-white font-extrabold text-[0.9rem] px-[10px] py-[4px] rounded-[8px] tracking-wider shadow-[0_0_15px_rgba(99,102,241,0.5)]" data-sd-id="5">TROIKA</span>
+          <div class="flex flex-col" data-sd-id="6">
+            <h1 class="text-[1.25rem] font-extrabold leading-tight text-white" data-sd-id="7">트로이카 연합축제 AI 맞춤형 추천 시스템</h1>
+            <p class="text-[0.75rem] text-[#94a3b8]" data-sd-id="8">경희대 · 한국외대 · 서울시립대 23개 상권 &amp; 60개 가맹점 쿼터 연동</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3" data-sd-id="9">
+          <div class="inline-flex items-center gap-[6px] bg-[rgba(16,185,129,0.15)] text-[#10b981] border border-[rgba(16,185,129,0.3)] px-3 py-[5px] rounded-full text-[0.8rem] font-semibold" data-sd-id="10">
+            <div class="pulse-dot" data-sd-id="11"></div>
+            <span data-sd-id="12">실시간 동적 분산 LIVE</span>
+          </div>
+          <button id="btnStartQuiz" class="flex items-center gap-2 bg-gradient-to-br from-[#6366f1] to-[#a855f7] text-white px-4 py-2 rounded-full text-[0.85rem] font-bold shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:-translate-y-0.5 transition-transform" data-sd-id="13">
+            <iconify-icon icon="lucide:wand-2"></iconify-icon>
+            <span data-sd-id="14">성향 진단 퀴즈</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="pt-8 pb-5 text-center px-6" data-sd-id="15">
+      <div class="inline-flex items-center gap-[6px] bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.08)] px-[14px] py-1 rounded-full text-[0.85rem] text-[#06b6d4] mb-3" data-sd-id="16">
+        <iconify-icon icon="lucide:compass"></iconify-icon> 개인 취향 맞춤형 상권 &amp; 축제 투어 가이드
+      </div>
+      <h2 class="text-[2.3rem] font-black tracking-tight mb-3 leading-[1.25]" data-sd-id="17">
+        나만의 축제 성향에 딱 맞는 <span class="gradient-text" data-sd-id="18">상권과 골목 핫플</span>을 만나보세요
+      </h2>
+      <p class="text-[#94a3b8] text-[1.05rem] max-w-[760px] mx-auto" data-sd-id="19">
+        방문 목적과 선호 권역, 실시간 혼잡도 데이터를 결합하여 최적의 상권 거점과 가맹점 할인 혜택, 
+        그리고 숨겨진 골목 스탬프 코스를 실시간으로 추천해 드립니다.
+      </p>
+    </section>
+
+    <main class="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 mt-6 mb-[60px] w-full flex-1" data-sd-id="20">
+      <aside class="flex flex-col gap-5" data-sd-id="21">
+        <div class="glass-panel rounded-[20px] p-[22px] shadow-lg transition-all" data-sd-id="22">
+          <div class="flex items-center justify-between mb-4" data-sd-id="23">
+            <span class="text-[1.05rem] font-bold flex items-center" data-sd-id="24">
+              <iconify-icon icon="lucide:users" class="text-[#8b5cf6] mr-[6px]"></iconify-icon> 방문객 4대 페르소나
+            </span>
+            <span class="text-[1.15rem]" data-sd-id="25">✨</span>
+          </div>
+          <div id="personaGrid" class="grid grid-cols-2 gap-[10px] mb-[14px]" data-sd-id="26"></div>
+          <div id="personaDetailBox" class="bg-[rgba(15,23,42,0.6)] border border-dashed border-[rgba(255,255,255,0.12)] rounded-[14px] p-[14px] text-[0.82rem] text-[#94a3b8]" data-sd-id="27"></div>
+        </div>
+
+        <div class="glass-panel rounded-[20px] p-[22px] shadow-lg" data-sd-id="28">
+          <div class="flex items-center justify-between mb-4" data-sd-id="29">
+            <span class="text-[1.05rem] font-bold flex items-center" data-sd-id="30">
+              <iconify-icon icon="lucide:sliders-horizontal" class="text-[#06b6d4] mr-[6px]"></iconify-icon> 세부 성향 튜닝
+            </span>
+            <span class="text-[0.75rem] text-[#64748b]" data-sd-id="31">커스텀 설정</span>
+          </div>
+          <div class="mb-4" data-sd-id="32">
+            <div class="flex justify-between items-center text-[0.82rem] font-semibold text-[#94a3b8] mb-2" data-sd-id="33">
+              <span data-sd-id="34">선호 탐방 권역</span>
+              <span class="text-[#38bdf8] bg-[rgba(56,189,248,0.1)] px-2 py-[2px] rounded-[8px]" data-sd-id="35">권역 매칭 35%</span>
+            </div>
+            <select id="regionSelect" class="w-full bg-[#1e293b] border border-[rgba(255,255,255,0.08)] text-[#f8fafc] px-[14px] py-[10px] rounded-[14px] text-[0.85rem] focus:border-[#6366f1] outline-none" data-sd-id="36">
+              <option value="전체" data-sd-id="37">3개 대학 전체 권역 (통합 탐방)</option>
+              <option value="회기권" data-sd-id="38">회기권 (경희대 · 청춘 버스킹 &amp; 컬처)</option>
+              <option value="이문권" data-sd-id="39">이문권 (한국외대 · 글로벌 미식 탐방)</option>
+              <option value="전농권" data-sd-id="40">전농권 (서울시립대 · 도시 상생 &amp; 로컬)</option>
+            </select>
+          </div>
+          <div class="mb-4" data-sd-id="41">
+            <div class="flex justify-between items-center text-[0.82rem] font-semibold text-[#94a3b8] mb-2" data-sd-id="42">
+              <span data-sd-id="43">축제 방문 목적</span>
+              <span class="text-[#38bdf8] bg-[rgba(56,189,248,0.1)] px-2 py-[2px] rounded-[8px]" data-sd-id="44">목적 매칭 35%</span>
+            </div>
+            <div id="purposePills" class="grid grid-cols-3 gap-2" data-sd-id="45">
+              <button class="bg-[#1e293b] border border-[rgba(255,255,255,0.08)] text-[#94a3b8] px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="46">🌏 세계미식</button>
+              <button class="bg-[#6366f1] text-white border border-[#6366f1] px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="47">🎸 공연·버스킹</button>
+              <button class="bg-[#1e293b] border border-[rgba(255,255,255,0.08)] text-[#94a3b8] px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="48">☕ 감성카페</button>
+            </div>
+          </div>
+          <div class="mb-0" data-sd-id="49">
+            <div class="flex justify-between items-center text-[0.82rem] font-semibold text-[#94a3b8] mb-2" data-sd-id="50">
+              <span data-sd-id="51">보행 및 이동 선호</span>
+              <span class="text-[#38bdf8] bg-[rgba(56,189,248,0.1)] px-2 py-[2px] rounded-[8px]" data-sd-id="52">거리 15%</span>
+            </div>
+            <div id="walkPills" class="grid grid-cols-3 gap-2" data-sd-id="53">
+              <button class="bg-[#1e293b] text-[#94a3b8] px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="54">🚶 여유/인접</button>
+              <button class="bg-[#1e293b] text-[#94a3b8] px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="55">🚶‍♂️ 보통/적당</button>
+              <button class="bg-[#6366f1] text-white px-[6px] py-2 rounded-[8px] text-[0.78rem] font-semibold" data-sd-id="56">🏃 열정뚜벅이</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-[20px] p-[22px] shadow-lg bg-gradient-to-br from-[rgba(30,41,59,0.8)] to-[rgba(15,23,42,0.9)] border-[rgba(99,102,241,0.25)]" data-sd-id="57">
+          <div class="flex items-center justify-between mb-4" data-sd-id="58">
+            <span class="text-[1.05rem] font-bold flex items-center" data-sd-id="59">
+              <iconify-icon icon="lucide:clock" class="text-[#f59e0b] mr-[6px]"></iconify-icon> 실시간 혼잡도 시뮬레이터
+            </span>
+            <span class="text-[0.75rem] text-[#38bdf8]" data-sd-id="60">10:00 ~ 22:00</span>
+          </div>
+          <div class="flex justify-between items-center mb-3" data-sd-id="61">
+            <div id="timeDisplay" class="text-[1.3rem] font-black text-[#38bdf8] bg-black/40 px-3 py-1 rounded-[8px] border border-[rgba(56,189,248,0.3)] font-mono" data-sd-id="62">18:00</div>
+            <div id="stepLabel" class="text-[0.82rem] text-[#f59e0b] font-semibold text-right max-w-[180px]" data-sd-id="63">저녁 피크타임 (혼잡도 최고조)</div>
+          </div>
+          <input type="range" min="0" max="24" value="16" class="custom-range" id="timeSlider" data-sd-id="64">
+          <div class="flex justify-between text-[0.7rem] text-[#64748b] mt-[6px]" data-sd-id="65">
+            <span data-sd-id="66">10:00 (개장)</span>
+            <span data-sd-id="67">14:00</span>
+            <span data-sd-id="68">18:00 (피크)</span>
+            <span data-sd-id="69">22:00 (종료)</span>
+          </div>
+          <div class="flex gap-2 mt-[14px]" data-sd-id="70">
+            <button id="btnPlayTimeline" class="flex-1 bg-white/10 border border-[rgba(255,255,255,0.08)] text-white p-2 rounded-[8px] text-[0.8rem] font-semibold flex items-center justify-center gap-1.5" data-sd-id="71">
+              <iconify-icon icon="lucide:play"></iconify-icon> 자동 재생
+            </button>
+            <button id="btnResetTimeline" class="flex-1 bg-white/10 border border-[rgba(255,255,255,0.08)] text-white p-2 rounded-[8px] text-[0.8rem] font-semibold flex items-center justify-center gap-1.5" data-sd-id="72">
+              <iconify-icon icon="lucide:rotate-ccw"></iconify-icon> 초기화
+            </button>
+          </div>
+          <div id="boostNoticeBanner" class="hidden mt-3 p-[14px] bg-gradient-to-br from-amber-500/15 to-red-500/15 border border-amber-500/40 rounded-[14px] items-start gap-[10px] text-[0.78rem] text-[#fde68a] animate-pulse" data-sd-id="73"></div>
+        </div>
+      </aside>
+
+      <section class="flex flex-col gap-6" data-sd-id="74">
+        <nav class="flex items-center justify-between bg-[rgba(17,24,39,0.72)] backdrop-blur-[16px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-[6px]" data-sd-id="75">
+          <div class="flex gap-[6px]" data-sd-id="76">
+            <button class="bg-[#6366f1] text-white px-[18px] py-[10px] rounded-[14px] text-[0.88rem] font-bold flex items-center gap-2 shadow-[0_4px_12px_rgba(99,102,241,0.4)]" data-sd-id="77">
+              <iconify-icon icon="lucide:award"></iconify-icon> AI 맞춤 추천 랭킹
+            </button>
+            <button class="text-[#94a3b8] px-[18px] py-[10px] rounded-[14px] text-[0.88rem] font-bold flex items-center gap-2 hover:text-white hover:bg-white/5" data-sd-id="78">
+              <iconify-icon icon="lucide:map-pin"></iconify-icon> 인터랙티브 상권 지도
+            </button>
+            <button class="text-[#94a3b8] px-[18px] py-[10px] rounded-[14px] text-[0.88rem] font-bold flex items-center gap-2 hover:text-white hover:bg-white/5" data-sd-id="79">
+              <iconify-icon icon="lucide:route"></iconify-icon> 청춘 투어 코스
+            </button>
+            <button class="text-[#94a3b8] px-[18px] py-[10px] rounded-[14px] text-[0.88rem] font-bold flex items-center gap-2 hover:text-white hover:bg-white/5" data-sd-id="80">
+              <iconify-icon icon="lucide:bar-chart-3"></iconify-icon> 신촌 벤치마킹 경제 효과
+            </button>
+          </div>
+          <div class="flex items-center gap-4 pr-[14px] text-[0.8rem] text-[#94a3b8]" data-sd-id="81">
+            <span data-sd-id="82">분석 상권: <strong class="text-white">23개소</strong></span>
+            <span data-sd-id="83">가맹점 쿼터: <strong class="text-white">60개소</strong></span>
+          </div>
+        </nav>
+
+        <div id="tab-recommendations" data-sd-id="84">
+          <div class="flex justify-between items-end mb-[14px]" data-sd-id="85">
+            <h2 class="text-[1.25rem] font-extrabold flex items-center gap-2" data-sd-id="86">
+              <iconify-icon icon="lucide:award" class="text-[#ec4899]"></iconify-icon> 
+              현재 조건 최적 추천 상권 거점 TOP 3
+            </h2>
+            <span class="text-[0.8rem] text-[#94a3b8]" data-sd-id="87">* 개인 선호 60% + 실시간 인접 골목 부스트 40% 결합 점수</span>
+          </div>
+          <div id="recommendationsContainer" class="grid grid-cols-1 xl:grid-cols-3 gap-4" data-sd-id="88"></div>
+        </div>
+
+        <div id="tab-map" class="hidden" data-sd-id="89">
+          <div class="bg-[rgba(17,24,39,0.72)] backdrop-blur-[16px] border border-[rgba(255,255,255,0.08)] rounded-[20px] p-4 shadow-2xl flex flex-col gap-3" data-sd-id="90">
+            <div class="flex justify-between items-center flex-wrap gap-[10px]" data-sd-id="91">
+              <h3 class="text-[1.1rem] font-extrabold flex items-center" data-sd-id="92">
+                <iconify-icon icon="lucide:map" class="text-[#06b6d4] mr-[6px]"></iconify-icon>
+                트로이카 23개 상권 &amp; 실시간 혼잡도 관제 지도
+              </h3>
+              <div class="flex items-center gap-3 text-[0.75rem]" data-sd-id="93">
+                <div class="flex items-center gap-1.5 text-[#94a3b8]" data-sd-id="94"><div class="w-2.5 h-2.5 rounded-full bg-[#10b981]" data-sd-id="95"></div> 쾌적 (&lt;0.6)</div>
+                <div class="flex items-center gap-1.5 text-[#94a3b8]" data-sd-id="96"><div class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" data-sd-id="97"></div> 혼잡 (0.6~0.8)</div>
+                <div class="flex items-center gap-1.5 text-[#94a3b8]" data-sd-id="98"><div class="w-2.5 h-2.5 rounded-full bg-[#ef4444]" data-sd-id="99"></div> 위험 (&gt;0.8)</div>
+              </div>
+            </div>
+            <div id="troikaMap" class="h-[480px] w-full rounded-[14px] border border-[rgba(255,255,255,0.08)]" data-sd-id="100"></div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-[rgba(30,41,59,0.9)] to-[rgba(15,23,42,0.95)] border border-pink-500/35 rounded-[20px] p-[22px] relative overflow-hidden" data-sd-id="101">
+          <div class="flex justify-between items-center mb-4" data-sd-id="102">
+            <div class="text-[1.15rem] font-extrabold flex items-center gap-2" data-sd-id="103">
+              <iconify-icon icon="lucide:award" class="text-[#ec4899]"></iconify-icon>
+              <span data-sd-id="104">나만의 맞춤형 트로이카 스탬프 패스</span>
+            </div>
+            <div id="stampCountDisplay" class="bg-[rgba(16,185,129,0.15)] text-[#10b981] border border-[rgba(16,185,129,0.3)] px-3 py-[5px] rounded-full text-[0.8rem] font-semibold" data-sd-id="105">1 / 3</div>
+          </div>
+          <p class="text-[0.85rem] text-[#94a3b8] mb-5" data-sd-id="106">
+            AI가 추천한 상권 내 가맹점을 방문하여 스탬프를 찍어보세요. 3개 완료 시 <strong>15% 모바일 통합할인 쿠폰</strong>이 즉시 발급됩니다.
+          </p>
+          <div id="stampSlots" class="flex justify-around gap-3 my-5" data-sd-id="107"></div>
+          <div id="stampRewardStatus" class="bg-emerald-500/12 border border-emerald-500/30 rounded-[14px] p-3 flex items-center justify-between text-[0.82rem]" data-sd-id="108">
+            <span data-sd-id="109">3곳 모두 방문 인증 시 <strong>트로이카 15% 통합할인 바우처</strong> 증정!</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-[rgba(255,255,255,0.08)] bg-[rgba(10,14,26,0.95)] py-6 text-center text-[0.8rem] text-[#64748b]" data-sd-id="110">
+      <div class="max-w-[1440px] mx-auto px-6" data-sd-id="111">
+        <p data-sd-id="112">동대문구 대학연합축제 '트로이카(TROIKA)' — 경희대학교 · 한국외국어대학교 · 서울시립대학교</p>
+        <p class="mt-1.5 text-[0.75rem]" data-sd-id="113">
+          서울시 상권분석서비스(영역-상권) 데이터 및 신촌글로벌대학문화축제 벤치마킹 기반 입지 설계 &amp; AI 추천 엔진
+        </p>
+      </div>
+    </footer>
+  </div>
+
+</body></html>

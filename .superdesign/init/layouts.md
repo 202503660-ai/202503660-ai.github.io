@@ -1,0 +1,356 @@
+# Layout
+Single inline layout in index.html: sticky header, centered hero, 380px sidebar + flexible content, footer, two modals. Full source follows.
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TROIKA 트로이카 연합축제 — AI 맞춤형 추천 & 실시간 동적 분산 시스템</title>
+
+  <!-- Google Fonts & Pretendard -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-badge">TROIKA</span>
+        <div class="brand-text">
+          <h1>트로이카 연합축제 AI 맞춤형 추천 시스템</h1>
+          <p>경희대 · 한국외대 · 서울시립대 23개 상권 & 60개 가맹점 쿼터 연동</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="badge-live">
+          <div class="pulse-dot"></div>
+          <span>실시간 동적 분산 LIVE</span>
+        </div>
+        <button id="btnStartQuiz" class="btn-quiz">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>성향 진단 퀴즈</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-tag">
+        <i class="fa-solid fa-compass"></i> 개인 취향 맞춤형 상권 &amp; 축제 투어 가이드
+      </div>
+      <h2 class="hero-title">
+        나만의 축제 성향에 딱 맞는 <span class="gradient-text">상권과 골목 핫플</span>을 만나보세요
+      </h2>
+      <p class="hero-desc">
+        방문 목적과 선호 권역, 실시간 혼잡도 데이터를 결합하여 최적의 상권 거점과 가맹점 할인 혜택, 
+        그리고 숨겨진 골목 스탬프 코스를 실시간으로 추천해 드립니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Layout -->
+  <main class="container main-layout">
+
+    <!-- Left Sidebar: Persona & Controls -->
+    <aside class="sidebar">
+
+      <!-- 1. Persona Presets Panel -->
+      <div class="glass-panel">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-users" style="color:var(--accent-purple);margin-right:6px;"></i> 방문객 4대 페르소나</span>
+          <span class="icon-badge">✨</span>
+        </div>
+        
+        <div class="persona-grid" id="personaGrid">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <div class="persona-detail-box" id="personaDetailBox">
+          <!-- Selected persona details & keywords -->
+        </div>
+      </div>
+
+      <!-- 2. Detailed Custom Tuning Filter -->
+      <div class="glass-panel">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-sliders" style="color:var(--accent-cyan);margin-right:6px;"></i> 세부 성향 튜닝</span>
+          <span style="font-size:0.75rem;color:var(--text-muted)">커스텀 설정</span>
+        </div>
+
+        <!-- Target Region -->
+        <div class="filter-group">
+          <div class="filter-label">
+            <span>선호 탐방 권역</span>
+            <span class="value-badge">권역 매칭 35%</span>
+          </div>
+          <select id="regionSelect" class="select-custom">
+            <option value="전체">3개 대학 전체 권역 (통합 탐방)</option>
+            <option value="회기권">회기권 (경희대 · 청춘 버스킹 & 컬처)</option>
+            <option value="이문권">이문권 (한국외대 · 글로벌 미식 탐방)</option>
+            <option value="전농권">전농권 (서울시립대 · 도시 상생 & 로컬)</option>
+          </select>
+        </div>
+
+        <!-- Main Purpose -->
+        <div class="filter-group">
+          <div class="filter-label">
+            <span>축제 방문 목적</span>
+            <span class="value-badge">목적 매칭 35%</span>
+          </div>
+          <div class="radio-pills" id="purposePills">
+            <button class="radio-pill-btn" data-val="글로벌_미식">🌏 세계미식</button>
+            <button class="radio-pill-btn active" data-val="청춘_버스킹">🎸 공연·버스킹</button>
+            <button class="radio-pill-btn" data-val="감성_카페">☕ 감성카페</button>
+            <button class="radio-pill-btn" data-val="전통_로컬">🛒 전통로컬</button>
+          </div>
+        </div>
+
+        <!-- Walking Preference -->
+        <div class="filter-group" style="margin-bottom:0;">
+          <div class="filter-label">
+            <span>보행 및 이동 선호</span>
+            <span class="value-badge">거리 15%</span>
+          </div>
+          <div class="radio-pills" id="walkPills">
+            <button class="radio-pill-btn" data-val="낮음">🚶 여유/인접</button>
+            <button class="radio-pill-btn" data-val="중간">🚶‍♂️ 보통/적당</button>
+            <button class="radio-pill-btn active" data-val="높음">🏃 열정뚜벅이</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Real-time Congestion Simulator Slider -->
+      <div class="glass-panel timeline-card">
+        <div class="panel-title">
+          <span><i class="fa-solid fa-clock-rotate-left" style="color:var(--accent-amber);margin-right:6px;"></i> 실시간 혼잡도 시뮬레이터</span>
+          <span style="font-size:0.75rem;color:var(--accent-highlight)">10:00 ~ 22:00</span>
+        </div>
+
+        <div class="time-display">
+          <div class="current-time-badge" id="timeDisplay">18:00</div>
+          <div class="step-label" id="stepLabel">저녁 피크타임 (혼잡도 최고조)</div>
+        </div>
+
+        <input type="range" min="0" max="24" value="16" class="custom-range" id="timeSlider" />
+        
+        <div class="timeline-ticks">
+          <span>10:00 (개장)</span>
+          <span>14:00</span>
+          <span>18:00 (피크)</span>
+          <span>22:00 (종료)</span>
+        </div>
+
+        <div class="timeline-controls">
+          <button class="btn-timeline" id="btnPlayTimeline">
+            <i class="fa-solid fa-play"></i> 자동 재생
+          </button>
+          <button class="btn-timeline" id="btnResetTimeline">
+            <i class="fa-solid fa-rotate-left"></i> 초기화
+          </button>
+        </div>
+
+        <!-- Dynamic Boost Notice Banner -->
+        <div id="boostNoticeBanner" class="boost-banner" style="display:none;">
+          <!-- Dynamically inserted when crowded -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Right Content Area -->
+    <section class="content-area">
+
+      <!-- View Navigation Tabs -->
+      <div class="tab-navigation">
+        <div class="tab-btn-group">
+          <button class="tab-btn active" data-tab="recommendations">
+            <i class="fa-solid fa-ranking-star"></i> AI 맞춤 추천 랭킹
+          </button>
+          <button class="tab-btn" data-tab="map">
+            <i class="fa-solid fa-map-location-dot"></i> 인터랙티브 상권 지도
+          </button>
+          <button class="tab-btn" data-tab="courses">
+            <i class="fa-solid fa-route"></i> 청춘 투어 코스
+          </button>
+          <button class="tab-btn" data-tab="economics">
+            <i class="fa-solid fa-chart-pie"></i> 신촌 벤치마킹 경제 효과
+          </button>
+        </div>
+
+        <div class="stats-summary">
+          <span>분석 상권: <strong>23개소</strong></span>
+          <span>가맹점 쿼터: <strong>60개소</strong></span>
+        </div>
+      </div>
+
+      <!-- Tab 1: AI Recommendation Ranking View -->
+      <div class="tab-content-panel" id="tab-recommendations">
+        <div class="section-header">
+          <h2>
+            <i class="fa-solid fa-award" style="color:var(--accent-pink)"></i> 
+            현재 조건 최적 추천 상권 거점 TOP 3
+          </h2>
+          <span style="font-size:0.8rem;color:var(--text-secondary)">
+            * 개인 선호 60% + 실시간 인접 골목 부스트 40% 결합 점수
+          </span>
+        </div>
+
+        <div class="recommendations-grid" id="recommendationsContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Tab 2: Interactive Map View -->
+      <div class="tab-content-panel" id="tab-map" style="display:none;">
+        <div class="map-container-wrap">
+          <div class="map-header">
+            <h3 style="font-size:1.1rem;font-weight:800;">
+              <i class="fa-solid fa-map" style="color:var(--accent-cyan);margin-right:6px;"></i>
+              트로이카 23개 상권 &amp; 실시간 혼잡도 관제 지도
+            </h3>
+            <div class="map-legends">
+              <div class="legend-item"><div class="legend-dot" style="background:#10b981;"></div> 쾌적 (&lt;0.6)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div> 혼잡 (0.6~0.8)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#ef4444;"></div> 위험 (&gt;0.8)</div>
+            </div>
+          </div>
+          <div id="troikaMap"></div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Curated Courses View -->
+      <div class="tab-content-panel" id="tab-courses" style="display:none;">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-person-walking" style="color:var(--accent-emerald)"></i> 트로이카 3대 청춘 투어 코스</h2>
+          <span style="font-size:0.8rem;color:var(--text-secondary)">신촌 청춘런 벤치마킹 적용 코스</span>
+        </div>
+        <div class="course-section" id="courseCardsContainer">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Tab 4: Economic Dashboard View -->
+      <div class="tab-content-panel" id="tab-economics" style="display:none;">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-chart-line" style="color:var(--accent-amber)"></i> 신촌글로벌축제 벤치마킹 경제 파급효과</h2>
+          <span style="font-size:0.8rem;color:var(--text-secondary)">방문객 5만명 기준 빅데이터 분석 모델</span>
+        </div>
+
+        <div class="econ-dashboard">
+          <div class="econ-kpi-card">
+            <div class="kpi-title">총 직접 소비 유발 효과</div>
+            <div class="kpi-value" id="kpiTotalRevenue" style="color:var(--accent-highlight)">10.08억 원</div>
+            <div class="kpi-sub">목표치 100% 달성</div>
+          </div>
+          <div class="econ-kpi-card">
+            <div class="kpi-title">골목 및 전통시장 분산율</div>
+            <div class="kpi-value" id="kpiAlleyShare" style="color:var(--accent-emerald)">58.7%</div>
+            <div class="kpi-sub">참여존 42% + 연계존 16.7%</div>
+          </div>
+          <div class="econ-kpi-card">
+            <div class="kpi-title">방문객 1인당 평균 소비액</div>
+            <div class="kpi-value" id="kpiSpending" style="color:var(--accent-purple)">28,000원</div>
+            <div class="kpi-sub">소비 전환율 72%</div>
+          </div>
+          <div class="econ-kpi-card">
+            <div class="kpi-title">축제 총 예상 방문객</div>
+            <div class="kpi-value" id="kpiTotalVisitors">50,000명</div>
+            <div class="kpi-sub">동대문구 3대학 연합</div>
+          </div>
+        </div>
+
+        <div id="econZoneBreakdown" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Interactive Stamp Pass Challenge Card -->
+      <div class="stamp-pass-card">
+        <div class="stamp-pass-header">
+          <div class="stamp-pass-title">
+            <i class="fa-solid fa-stamp" style="color:var(--accent-pink)"></i>
+            <span>나만의 맞춤형 트로이카 스탬프 패스</span>
+          </div>
+          <span class="badge-live" id="stampCountDisplay">1 / 3</span>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-secondary);">
+          AI가 추천한 상권 내 가맹점을 방문하여 스탬프를 찍어보세요. 3개 완료 시 <strong>15% 모바일 통합할인 쿠폰</strong>이 즉시 발급됩니다.
+        </p>
+
+        <div class="stamp-slots-wrap" id="stampSlots">
+          <!-- Populated by JS -->
+        </div>
+
+        <div class="stamp-reward-banner" id="stampRewardStatus">
+          <span>3곳 모두 방문 인증 시 <strong>트로이카 15% 통합할인 바우처</strong> 증정!</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>동대문구 대학연합축제 '트로이카(TROIKA)' — 경희대학교 · 한국외국어대학교 · 서울시립대학교</p>
+      <p style="margin-top:6px; font-size:0.75rem; color:var(--text-muted)">
+        서울시 상권분석서비스(영역-상권) 데이터 및 신촌글로벌대학문화축제 벤치마킹 기반 입지 설계 & AI 추천 엔진
+      </p>
+    </div>
+  </footer>
+
+  <!-- Modal 1: Persona Diagnosis Quiz Modal -->
+  <div class="modal-backdrop" id="quizModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-purple)"></i> 나만의 축제 성향 진단 퀴즈</h3>
+        <button class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="quiz-step-progress" id="quizProgress"></div>
+      <div class="quiz-question-title" id="quizQuestionTitle"></div>
+      <div class="quiz-options-list" id="quizOptionsList"></div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Partner Store Benefits Modal -->
+  <div class="modal-backdrop" id="storeListModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="storeModalDistrictName">가맹점 혜택 &amp; 스탬프</h3>
+        <button class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:16px;">
+        트로이카 연합축제 제휴 협약(10~15% 할인 또는 전용 메뉴 증정) 매장 목록입니다.
+      </p>
+      <div class="partner-stores-list" id="storeModalList"></div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Application Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+```

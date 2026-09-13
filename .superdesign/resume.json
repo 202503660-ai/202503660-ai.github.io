@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "targets": {
+    "/": {
+      "targetKind": "existing-ui",
+      "projectId": "44cec2c1-4317-460e-b9e6-1c26e2ab9657",
+      "baselineDraftId": "4c6d183e-1b3b-4cc3-b4df-1e0ecbaf69dc",
+      "activeDraftId": "4c6d183e-1b3b-4cc3-b4df-1e0ecbaf69dc",
+      "designSystemPath": ".superdesign/design-system.md",
+      "contextFiles": [
+        "index.html",
+        "styles.css",
+        ".superdesign/design-system.md"
+      ],
+      "fingerprints": {
+        "index.html": "a4e73adaa4a9d805a2d21cf52c0ed13f12b00684cd8b92a2661ea7d1c6242336",
+        "styles.css": "bd5584cd4a8285e25d35fe2d8ba956befe83fa8c609ac4b856f764bb9c5b219b",
+        ".superdesign/design-system.md": "1607aea86af152002f6b56a4cc950135b22fb0acf3e10032ec7d40b6d3f1777d"
+      },
+      "components": [],
+      "drafts": {
+        "4c6d183e-1b3b-4cc3-b4df-1e0ecbaf69dc": {
+          "title": "TROIKA Festival Visitor Guide",
+          "visualDirection": "Warm-white/coral responsive visitor guide; design awaiting user review",
+          "currentVersion": 3
+        }
+      },
+      "updatedAt": "2026-09-10T15:34:10.461Z",
+      "baselineVersion": 1
+    }
+  }
+}

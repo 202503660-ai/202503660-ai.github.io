@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
+  <title>TROIKA 트로이카 — 캠퍼스 골목 페스티벌 가이드</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) {
+      animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-out;
+    }
+    ::view-transition-new(root) {
+      animation: 0.4s cubic-bezier(0.4, 0, 0.2, 1) both fade-in;
+    }
+    @keyframes fade-out { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.98); } }
+    @keyframes fade-in { from { opacity: 0; transform: scale(1.02); } to { opacity: 1; transform: scale(1); } }
+
+    :root {
+      --bg-warm: #FAF8F5;
+      --card-white: #FFFFFF;
+      --ink: #242424;
+      --muted: #62615E;
+      --coral: #D94B39;
+      --forest: #2D5A27;
+      --border: #E5E1DA;
+    }
+
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: var(--bg-warm);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .coral-button {
+      background-color: var(--coral);
+      color: #ffffff;
+      transition: background-color 0.2s ease;
+    }
+    .coral-button:hover {
+      background-color: #BF3F30;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  button, select { min-height:44px; } :focus-visible {outline:3px solid #D94B39;outline-offset:3px;} article p { -webkit-line-clamp:unset!important; } main>div {min-width:0;} @media(max-width:768px){article h4{font-size:20px;} .grid.md\:grid-cols-2{grid-template-columns:1fr;} } @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}} </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#E5E1DA] px-4 md:px-8 py-4">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="#" id="nav-logo" class="text-2xl font-black tracking-tighter text-[#242424] uppercase">TROIKA</a>
+          <div class="hidden md:flex flex-col border-l border-[#E5E1DA] pl-4">
+            <span class="text-xs font-semibold text-[#62615E]">경희대 · 한국외대 · 서울시립대</span>
+            <span class="text-[10px] text-[#D94B39] font-bold uppercase tracking-widest">예시 데이터 · 데모</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4">
+          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-[#FAF8F5] border border-[#E5E1DA] rounded-full text-xs font-medium">
+            <iconify-icon icon="lucide:database" class="text-[#62615E]"></iconify-icon>
+            <span>예시 장소 9곳 · 매장 18곳</span>
+          </div>
+          <button id="header-quiz-btn" class="coral-button px-4 md:px-6 py-2 rounded-full text-sm font-bold min-h-[44px] flex items-center gap-2">
+            <iconify-icon icon="lucide:sparkles"></iconify-icon>
+            <span>취향 진단 퀴즈</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-7xl mx-auto px-4 md:px-8 pt-10 pb-8 w-full">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl md:text-5xl font-black text-[#242424] tracking-tight leading-tight mb-4">
+          오늘은,<br>
+          어떤 골목으로 떠날까요?
+        </h2>
+        <p class="text-base md:text-lg text-[#62615E] leading-relaxed">
+          세 학교가 만나는 특별한 골목길 축제, 트로이카.<br class="hidden md:block">
+          당신의 취향과 발걸음 속도에 맞춘 최적의 골목 코스를 제안합니다.
+        </p>
+      </div>
+    </section>
+
+    <p class="max-w-7xl mx-auto px-4 md:px-8 pb-4 w-full text-xs text-[#62615E]">디자인 미리보기 · 필터, 지도, 코스, 스탬프 기능은 시안 확인 후 구현합니다.</p>
+    <!-- Main Layout -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 mb-20 w-full flex-1">
+      
+      <!-- Mobile Filters Collapsible (Visible only on mobile) -->
+      <div class="lg:hidden">
+        <details class="bg-white border border-[#E5E1DA] rounded-2xl">
+          <summary class="p-4 font-bold text-sm cursor-pointer list-none flex justify-between items-center min-h-[44px]">
+            <span>탐방 조건 설정</span>
+            <iconify-icon icon="lucide:chevron-down"></iconify-icon>
+          </summary>
+          <div class="p-4 pt-0 border-t border-[#E5E1DA] space-y-6">
+            <!-- Walking -->
+            <div>
+              <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">보행 강도</label>
+              <div class="flex rounded-xl overflow-hidden border border-[#E5E1DA]">
+                <button class="flex-1 py-2 text-[10px] font-bold bg-white border-r border-[#E5E1DA]">가볍게</button>
+                <button class="flex-1 py-2 text-[10px] font-bold bg-[#D94B39] text-white">보통</button>
+                <button class="flex-1 py-2 text-[10px] font-bold bg-white">열정</button>
+              </div>
+            </div>
+<!-- Simulator -->
+        <div class="bg-white border border-[#E5E1DA] rounded-2xl p-6">
+          <h3 class="text-xs font-bold text-[#62615E] uppercase tracking-widest mb-4">시간별 혼잡도 <span class="text-[#D94B39] ml-1">[예시]</span></h3>
+          <div class="flex justify-between items-end mb-4">
+            <span class="text-2xl font-black tabular-nums tracking-tighter">18:00</span>
+            <span class="text-[10px] text-[#2D5A27] font-bold py-1 px-2 bg-[#2D5A27]/10 rounded-full">저녁 피크타임</span>
+          </div>
+          <input type="range" class="w-full accent-[#D94B39]" min="10" max="22" value="18">
+          <div class="flex justify-between text-[9px] text-[#62615E] mt-2 font-bold">
+            <span>10:00</span>
+            <span>22:00</span>
+          </div>
+        </div>
+<!-- Filter Content (Replicated from Sidebar) -->
+            <div class="space-y-4">
+              <div>
+                <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">권역 선택</label>
+                <select class="w-full bg-[#FAF8F5] border border-[#E5E1DA] p-3 rounded-xl text-sm min-h-[44px]">
+                  <option>전체 권역 탐방</option>
+                  <option>회기권 (경희대)</option>
+                  <option>이문권 (외대)</option>
+                  <option>전농권 (시립대)</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">방문 목적</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button class="min-h-[44px] border border-[#E5E1DA] rounded-xl text-xs font-bold bg-white">🎸 버스킹</button>
+                  <button class="min-h-[44px] border border-[#D94B39] text-[#D94B39] rounded-xl text-xs font-bold bg-[#FAF8F5]">🌏 미식탐방</button>
+                  <button class="min-h-[44px] border border-[#E5E1DA] rounded-xl text-xs font-bold bg-white">☕ 감성카페</button>
+                  <button class="min-h-[44px] border border-[#E5E1DA] rounded-xl text-xs font-bold bg-white">🛒 로컬마켓</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Sidebar (Desktop) -->
+      <aside class="hidden lg:flex flex-col gap-8">
+        <div class="bg-white border border-[#E5E1DA] rounded-2xl p-6">
+          <h3 class="text-xs font-bold text-[#62615E] uppercase tracking-widest mb-6">나의 탐방 취향</h3>
+          
+          <div class="space-y-6">
+            <!-- Region -->
+            <div>
+              <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">권역 선택</label>
+              <select id="sidebar-region-select" class="w-full bg-[#FAF8F5] border border-[#E5E1DA] p-3 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#D94B39]">
+                <option>전체 권역 탐방</option>
+                <option>회기권 (경희대)</option>
+                <option>이문권 (외대)</option>
+                <option>전농권 (시립대)</option>
+              </select>
+            </div>
+
+            <!-- Purpose -->
+            <div>
+              <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">방문 목적</label>
+              <div class="flex flex-wrap gap-2">
+                <button class="px-3 py-2 border border-[#E5E1DA] rounded-lg text-xs font-bold bg-white hover:bg-[#FAF8F5]">🎸 버스킹</button>
+                <button class="px-3 py-2 border border-[#D94B39] text-[#D94B39] rounded-lg text-xs font-bold bg-[#FAF8F5]">🌏 미식탐방</button>
+                <button class="px-3 py-2 border border-[#E5E1DA] rounded-lg text-xs font-bold bg-white hover:bg-[#FAF8F5]">☕ 감성카페</button>
+                <button class="px-3 py-2 border border-[#E5E1DA] rounded-lg text-xs font-bold bg-white hover:bg-[#FAF8F5]">🛒 로컬마켓</button>
+              </div>
+            </div>
+
+            <!-- Walking -->
+            <div>
+              <label class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest block mb-2">보행 강도</label>
+              <div class="flex rounded-xl overflow-hidden border border-[#E5E1DA]">
+                <button class="flex-1 py-2 text-[10px] font-bold bg-white border-r border-[#E5E1DA]">가볍게</button>
+                <button class="flex-1 py-2 text-[10px] font-bold bg-[#D94B39] text-white">보통</button>
+                <button class="flex-1 py-2 text-[10px] font-bold bg-white">열정</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulator -->
+        <div class="bg-white border border-[#E5E1DA] rounded-2xl p-6">
+          <h3 class="text-xs font-bold text-[#62615E] uppercase tracking-widest mb-4">시간별 혼잡도 <span class="text-[#D94B39] ml-1">[예시]</span></h3>
+          <div class="flex justify-between items-end mb-4">
+            <span class="text-2xl font-black tabular-nums tracking-tighter">18:00</span>
+            <span class="text-[10px] text-[#2D5A27] font-bold py-1 px-2 bg-[#2D5A27]/10 rounded-full">저녁 피크타임</span>
+          </div>
+          <input type="range" class="w-full accent-[#D94B39]" min="10" max="22" value="18">
+          <div class="flex justify-between text-[9px] text-[#62615E] mt-2 font-bold">
+            <span>10:00</span>
+            <span>22:00</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Content Results Area -->
+      <div class="space-y-8">
+        <!-- Tabs -->
+        <nav class="flex border-b border-[#E5E1DA] sticky top-[77px] bg-[#FAF8F5] z-30">
+          <a href="#" id="tab-rec" class="px-6 py-4 text-sm font-black text-[#D94B39] border-b-2 border-[#D94B39]">추천</a>
+          <a href="#" id="tab-map" class="px-6 py-4 text-sm font-bold text-[#62615E] hover:text-[#242424]">지도</a>
+          <a href="#" id="tab-course" class="px-6 py-4 text-sm font-bold text-[#62615E] hover:text-[#242424]">코스</a>
+        </nav>
+
+        <p class="text-xs text-[#62615E]">취향 맞춤 추천 TOP 3 · 장소·도보 시간·혼잡도·혜택은 모두 예시입니다.</p>
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <!-- Card 1 -->
+          <article class="bg-white border border-[#E5E1DA] rounded-2xl overflow-hidden flex flex-col group transition-all hover:shadow-xl">
+            <div class="h-40 bg-[#FAF8F5] relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-500">
+                <iconify-icon icon="lucide:music" class="text-8xl text-[#242424]"></iconify-icon>
+              </div>
+              <div class="absolute top-4 left-4">
+                <span class="px-2 py-1 bg-[#D94B39] text-white text-[10px] font-bold uppercase rounded">Top Pick</span>
+              </div>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest">회기권 · 경희대</span>
+                <span class="flex items-center gap-1 text-[10px] font-bold text-[#2D5A27] bg-[#2D5A27]/10 px-2 py-0.5 rounded-full">
+                  <iconify-icon icon="lucide:leaf"></iconify-icon> 쾌적
+                </span>
+              </div>
+              <h4 class="text-xl font-black tracking-tight mb-2">회기 버스킹 골목</h4>
+              <p class="text-sm text-[#62615E] mb-6 line-clamp-2">공연과 카페를 함께 즐기고 싶을 때. 짧은 도보 구간과 여유로운 혼잡도를 가정한 추천 예시입니다.</p>
+              
+              <div class="mt-auto space-y-4">
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <iconify-icon icon="lucide:footprints" class="text-[#62615E]"></iconify-icon>
+                    <span class="font-medium">도보 5분</span>
+                  </div>
+                  <div class="text-[#D94B39] font-bold">예시 혜택 · 15% 할인</div>
+                </div>
+                <a href="#" id="card-1-btn" class="w-full min-h-[44px] border border-[#242424] text-[#242424] font-bold text-sm rounded-xl flex items-center justify-center gap-2 hover:bg-[#242424] hover:text-white transition-colors">
+                  자세히 보기 <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="bg-white border border-[#E5E1DA] rounded-2xl overflow-hidden flex flex-col group transition-all hover:shadow-xl">
+            <div class="h-40 bg-[#FAF8F5] relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-500">
+                <iconify-icon icon="lucide:utensils" class="text-8xl text-[#242424]"></iconify-icon>
+              </div>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest">이문권 · 한국외대</span>
+                <span class="flex items-center gap-1 text-[10px] font-bold text-[#D94B39] bg-[#D94B39]/10 px-2 py-0.5 rounded-full">
+                  <iconify-icon icon="lucide:users"></iconify-icon> 혼잡
+                </span>
+              </div>
+              <h4 class="text-xl font-black tracking-tight mb-2">이문 세계미식 거리</h4>
+              <p class="text-sm text-[#62615E] mb-6 line-clamp-2">미식탐방 취향에 맞춘 추천 예시. 다양한 메뉴를 탐색하며 걷는 코스를 가정했습니다.</p>
+              
+              <div class="mt-auto space-y-4">
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <iconify-icon icon="lucide:footprints" class="text-[#62615E]"></iconify-icon>
+                    <span class="font-medium">도보 8분</span>
+                  </div>
+                  <div class="text-[#D94B39] font-bold">예시 혜택 · 메뉴 증정</div>
+                </div>
+                <a href="#" id="card-2-btn" class="w-full min-h-[44px] border border-[#242424] text-[#242424] font-bold text-sm rounded-xl flex items-center justify-center gap-2 hover:bg-[#242424] hover:text-white transition-colors">
+                  자세히 보기 <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="bg-white border border-[#E5E1DA] rounded-2xl overflow-hidden flex flex-col group transition-all hover:shadow-xl">
+            <div class="h-40 bg-[#FAF8F5] relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-500">
+                <iconify-icon icon="lucide:tree-pine" class="text-8xl text-[#242424]"></iconify-icon>
+              </div>
+            </div>
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex justify-between items-start mb-2">
+                <span class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest">전농권 · 서울시립대</span>
+                <span class="flex items-center gap-1 text-[10px] font-bold text-[#2D5A27] bg-[#2D5A27]/10 px-2 py-0.5 rounded-full">
+                  <iconify-icon icon="lucide:leaf"></iconify-icon> 쾌적
+                </span>
+              </div>
+              <h4 class="text-xl font-black tracking-tight mb-2">전농 로컬 산책길</h4>
+              <p class="text-sm text-[#62615E] mb-6 line-clamp-2">로컬 공간과 산책을 좋아한다면. 비교적 긴 도보 구간과 여유로운 혼잡도를 가정했습니다.</p>
+              
+              <div class="mt-auto space-y-4">
+                <div class="flex items-center justify-between text-xs">
+                  <div class="flex items-center gap-2">
+                    <iconify-icon icon="lucide:footprints" class="text-[#62615E]"></iconify-icon>
+                    <span class="font-medium">도보 12분</span>
+                  </div>
+                  <div class="text-[#D94B39] font-bold">예시 혜택 · 기념품</div>
+                </div>
+                <a href="#" id="card-3-btn" class="w-full min-h-[44px] border border-[#242424] text-[#242424] font-bold text-sm rounded-xl flex items-center justify-center gap-2 hover:bg-[#242424] hover:text-white transition-colors">
+                  자세히 보기 <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Stamp Pass Section -->
+        <div class="bg-white border border-[#E5E1DA] rounded-3xl p-8">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+              <h3 class="text-xl font-black tracking-tight mb-1 flex items-center gap-2">
+                <iconify-icon icon="lucide:stamp" class="text-[#D94B39]"></iconify-icon>
+                트로이카 스탬프 패스
+              </h3>
+              <p class="text-sm text-[#62615E]">예시 매장 3곳에서 데모 스탬프를 모으면 샘플 쿠폰이 표시됩니다.</p>
+            </div>
+            <div class="px-4 py-2 bg-[#FAF8F5] border border-[#E5E1DA] rounded-2xl flex items-center gap-3">
+              <span class="text-[11px] font-bold text-[#62615E] uppercase tracking-widest">진행 상황</span>
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-[#E5E1DA]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#E5E1DA]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#E5E1DA]"></div>
+              </div>
+              <span class="text-xs font-black tabular-nums text-[#D94B39]">0 / 3</span>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="h-24 bg-[#FAF8F5] border-2 border-dashed border-[#E5E1DA] rounded-2xl flex items-center justify-center">
+              <iconify-icon icon="lucide:plus" class="text-[#E5E1DA] text-2xl"></iconify-icon>
+            </div>
+            <div class="h-24 bg-[#FAF8F5] border-2 border-dashed border-[#E5E1DA] rounded-2xl flex items-center justify-center">
+              <iconify-icon icon="lucide:plus" class="text-[#E5E1DA] text-2xl"></iconify-icon>
+            </div>
+            <div class="h-24 bg-[#FAF8F5] border-2 border-dashed border-[#E5E1DA] rounded-2xl flex items-center justify-center">
+              <iconify-icon icon="lucide:plus" class="text-[#E5E1DA] text-2xl"></iconify-icon>
+            </div>
+          </div>
+
+          <div class="bg-[#2D5A27]/5 border border-[#2D5A27]/20 rounded-2xl p-4 flex items-center gap-4">
+            <div class="w-12 h-12 bg-white rounded-xl border border-[#2D5A27]/20 flex items-center justify-center">
+              <iconify-icon icon="lucide:ticket" class="text-[#2D5A27] text-xl"></iconify-icon>
+            </div>
+            <div class="flex-1">
+              <span class="text-[10px] font-bold text-[#2D5A27] uppercase tracking-widest block">샘플 리워드</span>
+              <p class="text-sm font-bold">15% 샘플 쿠폰 · 실제 사용 불가</p>
+            </div>
+            <button class="text-xs font-bold text-[#62615E] opacity-50 cursor-not-allowed">체험 대기</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Economic Footnote (Collapsed Details) -->
+    <footer class="bg-white border-t border-[#E5E1DA] py-8">
+      <div class="max-w-7xl mx-auto px-4 md:px-8">
+        <details class="group">
+          <summary class="list-none cursor-pointer flex items-center justify-between text-[#62615E] text-xs font-bold uppercase tracking-widest">
+            <span>경제 효과 참고 정보 · 예시</span>
+            <iconify-icon icon="lucide:plus" class="group-open:rotate-45 transition-transform"></iconify-icon>
+          </summary>
+          <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-8 py-6 border-t border-[#FAF8F5]">
+            <div class="flex flex-col gap-1">
+              <span class="text-[10px] text-[#62615E] font-bold">직접 소비 유발</span>
+              <span class="text-lg font-black tabular-nums">₩10.08억</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[10px] text-[#62615E] font-bold">1인당 평균 소비</span>
+              <span class="text-lg font-black tabular-nums">₩28,000</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[10px] text-[#62615E] font-bold">골목 분산율</span>
+              <span class="text-lg font-black tabular-nums">58.7%</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-[10px] text-[#62615E] font-bold">예상 방문객</span>
+              <span class="text-lg font-black tabular-nums">50,000+</span>
+            </div>
+          </div>
+        </details>
+        <div class="mt-8 pt-8 border-t border-[#FAF8F5] text-center">
+          <p class="text-[11px] text-[#62615E] font-medium">
+            본 사이트는 동대문구 대학연합축제 '트로이카(TROIKA)'를 위한 가상 시나리오 가이드입니다.<br>
+            모든 혜택 및 수치는 혼잡도 시뮬레이션을 위한 예시값입니다.
+          </p>
+          <p class="mt-4 text-[10px] font-bold text-[#242424] uppercase tracking-[0.2em]">TROIKA · FESTIVAL GUIDE DEMO</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Modal (Sample Content) -->
+    <div id="quiz-modal" class="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+      <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl">
+        <div class="p-6 md:p-8">
+          <div class="flex justify-between items-start mb-8">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-[#D94B39] flex items-center justify-center text-white">
+                <iconify-icon icon="lucide:sparkles" class="text-sm"></iconify-icon>
+              </div>
+              <h3 class="text-xl font-black tracking-tight">취향 진단 퀴즈</h3>
+            </div>
+            <button id="close-modal" class="w-8 h-8 rounded-full bg-[#FAF8F5] flex items-center justify-center hover:bg-[#E5E1DA] transition-colors" aria-label="닫기">
+              <iconify-icon icon="lucide:x"></iconify-icon>
+            </button>
+          </div>
+          
+          <div class="space-y-6">
+            <div class="flex gap-1">
+              <div class="h-1 flex-1 bg-[#D94B39] rounded-full"></div>
+              <div class="h-1 flex-1 bg-[#E5E1DA] rounded-full"></div>
+              <div class="h-1 flex-1 bg-[#E5E1DA] rounded-full"></div>
+            </div>
+            
+            <div class="space-y-4">
+              <h4 class="text-lg font-bold leading-tight">축제에서 가장 기대되는 순간은 언제인가요?</h4>
+              <div class="grid grid-cols-1 gap-3">
+                <button class="w-full p-4 border border-[#E5E1DA] rounded-2xl text-left text-sm font-bold hover:border-[#D94B39] hover:bg-[#FAF8F5] transition-all">
+                  해 질 녘, 골목 어디선가 들려오는 버스킹 공연
+                </button>
+                <button class="w-full p-4 border border-[#E5E1DA] rounded-2xl text-left text-sm font-bold hover:border-[#D94B39] hover:bg-[#FAF8F5] transition-all">
+                  친구들과 함께 맛보는 캠퍼스 앞 이색 미식 투어
+                </button>
+                <button class="w-full p-4 border border-[#E5E1DA] rounded-2xl text-left text-sm font-bold hover:border-[#D94B39] hover:bg-[#FAF8F5] transition-all">
+                  조용한 골목 끝, 작고 아늑한 독립 서점 발견
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple modal toggle for demonstration
+    const quizBtn = document.getElementById('header-quiz-btn');
+    const modal = document.getElementById('quiz-modal');
+    const closeBtn = document.getElementById('close-modal');
+
+    if (quizBtn && modal && closeBtn) {
+      quizBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+      closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

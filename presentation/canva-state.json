@@ -1,0 +1,130 @@
+{
+  "transaction_id": "1003692371166791890",
+  "design_id": "DAHUxVaPi40",
+  "status": "committed",
+  "preview": "https://www.canva.com/d/z4T8vgJ0G8-QvZg",
+  "thumbs": {
+    "1": "https://export-download.canva.com/ddbebdd3-9f9e-4409-b011-adc2695efe9d/0/0001-4455701482385137937.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T052149Z&X-Amz-Expires=31905&X-Amz-Signature=571300ce0fa676e6ddbece8102d6e109fde04df67d998ad390d7c535d5616ed5&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A13%3A34%20GMT",
+    "2": "https://export-download.canva.com/cdedba8e-48bb-4024-b950-5b13b563b16b/0/0002-7551926228752382719.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T003612Z&X-Amz-Expires=48495&X-Amz-Signature=525eba74750479ca6f288f4ab1e3b663b0f193dd7b9890c88dfcde1d20677d28&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A04%3A27%20GMT",
+    "3": "https://export-download.canva.com/8216a0b6-9179-4e4a-8a5d-ea59b8a2f8c3/0/0003-5865328166696809538.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T013022Z&X-Amz-Expires=48280&X-Amz-Signature=1aae911d45f526da14b8005b6eabdf59d6d2256291264897c8617c30b37b66c6&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A55%3A02%20GMT",
+    "4": "https://export-download.canva.com/aa1477eb-46a8-4beb-9414-3266f038c6d0/0/0004-3685585949632579263.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T223152Z&X-Amz-Expires=57065&X-Amz-Signature=8ce7c617f6eff58139c947827a54afc8b36245d242f5433e5f971ccfc8ff478f&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A22%3A57%20GMT",
+    "5": "https://export-download.canva.com/773d9467-3821-44e1-9a2f-95ca5770b2d8/0/0005-1501340127507246680.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T101258Z&X-Amz-Expires=14499&X-Amz-Signature=ff649f5586c0d8ef3ae14b3e785bfce295455fa30682f0a44d722b78cbc043b2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A14%3A37%20GMT",
+    "6": "https://export-download.canva.com/c5d3416c-c332-4b6b-909c-7f66ef8277a5/0/0006-56810549413664784.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T024025Z&X-Amz-Expires=43007&X-Amz-Signature=eb7a76227cdb833547ed2bcf6cd9a69a4a04a49151d131c931aadaa80f5c04b4&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A37%3A12%20GMT",
+    "7": "https://export-download.canva.com/36088e48-3975-4f4f-a03b-629e15088fc6/0/0007-5865328168396131118.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260910T224641Z&X-Amz-Expires=55833&X-Amz-Signature=be335a3503e550dda094e5e52534e292c58e45751d89a6e7c55a935e9feaa4db&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A17%3A14%20GMT",
+    "8": "https://export-download.canva.com/10e96d70-c7cf-4c50-aebe-d24005e2c950/0/0008-3911891829836034590.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T001429Z&X-Amz-Expires=50022&X-Amz-Signature=dd74d43fff513603f0b2f5b6df63473d2e9656aa7f5f337e6080baa66b6383bd&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A08%3A11%20GMT",
+    "9": "https://export-download.canva.com/8a6eb2a2-0797-4b6b-9545-e34203168aa4/0/0009-142378939760357418.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T074555Z&X-Amz-Expires=25134&X-Amz-Signature=a958fc003601d0252234916cf217f70aab2abfdb98651fc09d09462aeff58473&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A44%3A49%20GMT",
+    "10": "https://export-download.canva.com/6d32ecdb-61b6-4f4f-9594-020fa12fd2d0/0/0010-2806258120720808641.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260911T034909Z&X-Amz-Expires=39556&X-Amz-Signature=8f9018588286ea1bcb47fe37474a5e254a68c4629cbd77d571501addddf2f63a&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Fri%2C%2011%20Sep%202026%2014%3A48%3A25%20GMT"
+  },
+  "pages": [
+    {
+      "page_id": "PBNjJNHYzPsWlNCd",
+      "page_number": 1,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBJrRMyMWT711fc3",
+      "page_number": 2,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBTfYhT80F8w68s4",
+      "page_number": 3,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBj5h4RgWHbXCh7J",
+      "page_number": 4,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PB6ztMnGNZtcwC8R",
+      "page_number": 5,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBcz0BXKlxqFS61j",
+      "page_number": 6,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBbHLtZthG8YvHF0",
+      "page_number": 7,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBvHzzP37M2JZ4C9",
+      "page_number": 8,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PB5dSypkljYvY4jF",
+      "page_number": 9,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    },
+    {
+      "page_id": "PBQqNrj8kR2R6TvY",
+      "page_number": 10,
+      "dimension": {
+        "width": 1920,
+        "height": 1080
+      },
+      "is_responsive": false,
+      "is_empty": false,
+      "is_editable": true
+    }
+  ]
+}
